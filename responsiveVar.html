@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic</title>
+    <style>
+        :root{
+            --base: #ffc600;
+            --spacing: 10px;
+            --blur: 5px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #193549;
+            text-align: center;
+        }
+
+        .image-container {
+            margin: var(--spacing);
+            width: 80%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hl{
+            color: var(--base);
+        }
+
+        img {
+            padding: var(--spacing);
+            background: var(--base);
+            filter: blur(var(--blur));
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        section {
+            text-align: center;
+        }
+
+        section {
+            color: white;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: 100;
+            font-size: 50px;
+        }
+
+        .controls {
+            margin-bottom: 70px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <h2>Update CSS Variable with <span class="hl">JS</span></h2>
+        <div class="controls">
+
+            <label for="spacing">Spacing:</label>
+            <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+            <label for="blur">Blur:</label>
+            <input type="range" name="blur" min="0" max="20" value="4" data-sizing="px">
+
+            <label for="base">Base Color</label>
+            <input type="color" name="base" value="#ffc600">
+        </div>
+
+        <div class="image-container">
+            <img src="" alt="Random Unsplash Image" id="image">
+        </div>
+
+    </section>
+    <script>
+        const apiUrl = 'https://api.unsplash.com/photos/random/?';
+        const apiKey = 'k6MEKLvzAHzdUVH8hNhTVbwUpY2a-_EC-Q33taLxinc';
+        const imgElement = document.getElementById('image');
+        const imgWidth = 1080;
+        const imgHeight =1920;
+
+
+        fetch(apiUrl + `client_id=${apiKey}&w=${imgWidth}&h=${imgHeight}`)
+
+            .then(response => response.json())
+            .then(data => {
+                const imageUrl = data.urls.regular;
+                imgElement.src = imageUrl;
+            })
+            .catch(error => console.error('Error:', error));
+
+            const inputs = document.querySelectorAll('.controls input');
+
+            function handleChange(){
+                const suffix = this.dataset.sizing || '';
+                document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
+            }
+
+            inputs.forEach(input => input.addEventListener('change', handleChange));
+            inputs.forEach(input => input.addEventListener('mouseover', handleChange));
+    </script>
+</body>
+
+</html>

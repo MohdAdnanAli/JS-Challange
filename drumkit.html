@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project DrumKIT</title>
+    <style>
+        body {
+            background-image: url("https://cdn.pixabay.com/photo/2024/04/26/09/17/blurred-8721460_1280.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        } 
+
+        .keys {
+            display: flex;
+            flex-direction: row;
+            padding: 18% 7%;
+        
+        }
+
+        .key {
+            border: 4px solid black;
+            border-radius: 5px;
+            margin: 1rem;
+            font-size: 1.5rem;
+            padding: 1rem .5rem;
+            transition: all 0.07s;
+            min-width: 95px;
+            text-align: center;
+            color: white;
+            background: rgb(0, 0, 0, 0.4);
+            text-shadow: 0 0 5px black;
+        }
+
+        .playing {
+            transform: scale(1.1);
+            border-color: #ffc600;
+            box-shadow: 0 0 10px #ffc600;
+        }
+
+        kbd {
+            display: block;
+            font-size: 40px;
+        }
+
+        .sound {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffc600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="keys">
+        <div data-key="65" class="key"><kbd>A</kbd><span class="sound">Clap</span></div>
+        <div data-key="83" class="key"><kbd>S</kbd><span class="sound">Hihat</span></div>
+        <div data-key="68" class="key"><kbd>D</kbd><span class="sound">Kick</span></div>
+        <div data-key="70" class="key"><kbd>F</kbd><span class="sound">Openhat</span></div>
+        <div data-key="71" class="key"><kbd>G</kbd><span class="sound">Boom</span></div>
+        <div data-key="72" class="key"><kbd>H</kbd><span class="sound">Ride</span></div>
+        <div data-key="74" class="key"><kbd>J</kbd><span class="sound">Snare</span></div>
+        <div data-key="75" class="key"><kbd>K</kbd><span class="sound">Tom</span></div>
+        <div data-key="76" class="key"><kbd>L</kbd><span class="sound">Tink</span></div>
+    </div>
+
+    <audio data-key="65" src="./Music/Clap_20_480.wav"></audio>
+    <audio data-key="83" src="./Music/Hat_16_482_SP.wav"></audio>
+    <audio data-key="68" src="./Music/RideKick_361_01.wav"></audio>
+    <audio data-key="70" src="./Music/good-open-hat-sample-a-key-01-Kl9.wav"></audio>
+    <audio data-key="71" src="./Music/mixkit-arcade-game-explosion-2759.wav"></audio>
+    <audio data-key="72" src="./Music/RideBell_01_717.wav"></audio>
+    <audio data-key="74" src="./Music/RezoKitSnare_02_720.wav"></audio>
+    <audio data-key="75" src="./Music/Linn_TomLo_02_362.wav"></audio>
+    <audio data-key="76" src="./Music/107785__hans__tink.wav"></audio>
+
+
+    <script>
+        function playSound(e) {
+            const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+            const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+            // console.log(audio);
+            if (!audio) return;
+            audio.currentTime = 0;
+            audio.play();
+            key.classList.add('playing');
+        }
+        function removeTransition(e) {
+            if (e.propertyName !== 'transform') return;
+            this.classList.remove('playing');
+        }
+        
+        const keys = document.querySelectorAll('.key');
+        keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+        window.addEventListener('keydown', playSound);
+
+    </script>
+
+
+</body>
+
+</html>
